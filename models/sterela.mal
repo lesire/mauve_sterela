@@ -1,0 +1,13 @@
+include "safepilot.mal"
+include "obstacle.mal"
+
+include "obstacle_architecture.mal"
+
+library sterela {
+
+	codel toDouble(in d: Float32): double
+	codel toFloat32(in d: double): Float32
+	codel obstacleDistance(in s: LaserScan, in lateral_distance: double): double
+	codel min(in a: double, in b: double): double
+	
+}

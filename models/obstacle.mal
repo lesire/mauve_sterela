@@ -1,0 +1,35 @@
+library sterela {
+
+	use sensor_msgs
+	use geometry_msgs
+	
+	shell ObstacleDetectorShell {
+		input port laser_low: LaserScan
+		input port laser_high: LaserScan
+		output port distance: Float32
+		
+		property max_range: double [0;100] = 100
+		property base_width: double [0;10] = 2
+	}
+	
+	core ObstacleDetectorCore (ObstacleDetectorShell) {
+	
+		var l: LaserScan
+		var d: double
+	
+		update = {
+			d = max_range;
+			if (read(laser_low, l) == new_data) then {
+				d = min(d, obstacleDistance(l, base_width/2));
+			} else {}
+			if (read(laser_high, l) == new_data) then {
+				d = min(d, obstacleDistance(l, max_range));
+			} else {}
+			write(distance, toFloat32(d));
+		}
+	
+	}
+	
+	component ObstacleDetector (ObstacleDetectorShell, ObstacleDetectorCore)
+
+}

@@ -1,0 +1,76 @@
+// RTT-ROS
+import("rtt_ros")
+// ROS related imports
+import("rtt_rosnode")
+import("rtt_roscomm")
+import("rtt_dynamic_reconfigure")
+import("rtt_rosparam")
+// Import used libraries
+// Import sterela
+ros.import("sterela")
+// Create components
+loadComponent("safe_pilot", "sterela::SafePilot")
+loadComponent("obstacle_detector", "sterela::ObstacleDetector")
+// Set component properties from architectures
+// Set component properties from deployments
+// Connect ports
+var ConnPolicy cp
+cp.type = DATA
+connect("obstacle_detector.distance", "safe_pilot.obstacle_distance", cp)
+// Connect operations
+// Set activities
+obstacle_detector.period = 100
+obstacle_detector.priority = 1
+obstacle_detector.deadline = 100
+obstacle_detector.affinity = 0
+setActivity("obstacle_detector", 0.1, 1, ORO_SCHED_RT)
+obstacle_detector.setCpuAffinity(0)
+safe_pilot.period = 100
+safe_pilot.priority = 2
+safe_pilot.deadline = 100
+safe_pilot.affinity = 0
+setActivity("safe_pilot", 0.1, 2, ORO_SCHED_RT)
+safe_pilot.setCpuAffinity(0)
+// Configure components
+safe_pilot.configure()
+obstacle_detector.configure()
+// Stream ports to ROS
+stream("safe_pilot.obstacle_distance", ros.topic("safe_pilot/obstacle_distance"))
+stream("safe_pilot.desired_command", ros.topic("safe_pilot/desired_command"))
+stream("safe_pilot.command", ros.topic("safe_pilot/command"))
+stream("safe_pilot.state", ros.topic("safe_pilot/state"))
+stream("safe_pilot.tick", ros.topic("safe_pilot/tick"))
+stream("obstacle_detector.laser_low", ros.topic("obstacle_detector/laser_low"))
+stream("obstacle_detector.laser_high", ros.topic("obstacle_detector/laser_high"))
+stream("obstacle_detector.distance", ros.topic("obstacle_detector/distance"))
+stream("obstacle_detector.state", ros.topic("obstacle_detector/state"))
+stream("obstacle_detector.tick", ros.topic("obstacle_detector/tick"))
+// Dynamic reconfigure safe_pilot
+loadService("safe_pilot", "SafePilot_reconfigure")
+safe_pilot.SafePilot_reconfigure.advertise("/safe_pilot")
+// Dynamic reconfigure obstacle_detector
+loadService("obstacle_detector", "ObstacleDetector_reconfigure")
+obstacle_detector.ObstacleDetector_reconfigure.advertise("/obstacle_detector")
+// MAUVE parameters of safe_pilot
+loadService("safe_pilot", "rosparam")
+safe_pilot.rosparam.setParam("safe_pilot/period", "period")
+safe_pilot.rosparam.setParam("safe_pilot/priority", "priority")
+safe_pilot.rosparam.setParam("safe_pilot/deadline", "deadline")
+safe_pilot.rosparam.setParam("safe_pilot/affinity", "affinity")
+safe_pilot.rosparam.setParam("safe_pilot/shell", "shell")
+safe_pilot.rosparam.setParam("safe_pilot/core", "core")
+safe_pilot.rosparam.setParam("safe_pilot/statemachine", "statemachine")
+safe_pilot.rosparam.setParam("safe_pilot/monitors", "monitors")
+// MAUVE parameters of obstacle_detector
+loadService("obstacle_detector", "rosparam")
+obstacle_detector.rosparam.setParam("obstacle_detector/period", "period")
+obstacle_detector.rosparam.setParam("obstacle_detector/priority", "priority")
+obstacle_detector.rosparam.setParam("obstacle_detector/deadline", "deadline")
+obstacle_detector.rosparam.setParam("obstacle_detector/affinity", "affinity")
+obstacle_detector.rosparam.setParam("obstacle_detector/shell", "shell")
+obstacle_detector.rosparam.setParam("obstacle_detector/core", "core")
+obstacle_detector.rosparam.setParam("obstacle_detector/statemachine", "statemachine")
+obstacle_detector.rosparam.setParam("obstacle_detector/monitors", "monitors")
+// Start components
+safe_pilot.start()
+obstacle_detector.start()

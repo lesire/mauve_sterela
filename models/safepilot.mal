@@ -1,0 +1,61 @@
+library sterela {
+
+	use ctypes
+	use std_msgs
+	use geometry_msgs
+
+	shell SafePilotShell {
+		input port obstacle_distance: Float32
+		input port desired_command: TwistStamped
+		output port command: TwistStamped
+		
+		property dist_zone1: double [0;1] = 1
+		property dist_zone2: double [0;10] = 3	
+	}
+	
+	core SafePilotCore (SafePilotShell) {
+	
+		var cmd: TwistStamped
+	
+		statemachine {
+			var d: Float32
+			
+			initial state Zone3 {
+			    entry = { write(command, cmd); }
+			    run = {
+			    	read(desired_command, cmd);
+			    	read(obstacle_distance, d);
+			    }
+			    handle = { write(command, cmd); }
+    			transition t1 if (toDouble(d) < dist_zone1) to Zone1
+    			transition t2 if (toDouble(d) < dist_zone2) to Zone2
+  			}
+  			
+  			state Zone2 {
+			    entry = { write(command, cmd); }
+			    run = {
+			    	read(desired_command, cmd);
+			    	read(obstacle_distance, d);
+			    }
+			    handle = { write(command, cmd); }
+    			transition t1 if (toDouble(d) < dist_zone1) to Zone1
+    			transition t3 if (toDouble(d) > dist_zone2) to Zone3
+  			}
+  			
+  			state Zone1 {
+			    entry = { write(command, cmd); }
+			    run = {
+			    	read(desired_command, cmd);
+			    	read(obstacle_distance, d);
+			    }
+			    handle = { write(command, cmd); }
+    			transition t3 if (toDouble(d) > dist_zone2) to Zone3
+    			transition t2 if (toDouble(d) > dist_zone1) to Zone2
+  			}
+		}
+	
+	}
+	
+	component SafePilot (SafePilotShell, SafePilotCore)
+
+}

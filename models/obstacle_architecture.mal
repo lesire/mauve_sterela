@@ -1,0 +1,23 @@
+library sterela {
+
+	architecture ObstacleArchitecture {
+	
+		instance obstacle_detector: ObstacleDetector
+		instance safe_pilot: SafePilot
+		
+		connection obstacle_detector.distance -> safe_pilot.obstacle_distance
+
+	}
+	
+	deployment ObstacleDeployment {
+		architecture ObstacleArchitecture
+		activity obstacle_detector {
+			priority = 1
+			period = 100
+		}
+		activity safe_pilot {
+			priority = 2
+			period = 100
+		}
+	}
+}

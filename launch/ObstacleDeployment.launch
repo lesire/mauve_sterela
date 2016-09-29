@@ -1,0 +1,26 @@
+
+<launch>
+  <arg name="log_level" default="warning"/>
+  <arg name="trace" default="false"/>
+  <arg name="start" default="false"/>
+  <arg name="extra" default=""/>
+  
+  <!-- Raw deployment (without LTTng tracing) --> 
+  <node name="$(anon ObstacleDeployment)" 
+    pkg="rtt_ros" type="deployer" 
+    args="-l $(arg log_level) -s $(find sterela)/scripts/ObstacleDeployment.ops $(arg extra)"
+    output="screen" unless="$(arg trace)" />
+
+  <!-- Mauve deployment (with LTTng tracing) --> 
+  <group if="$(arg trace)">  
+    <node name="$(anon ObstacleDeployment)" 
+      pkg="mauve" type="mauve_trace.sh"
+      args="deployer-gnulinux -l $(arg log_level) -s $(find sterela)/scripts/ObstacleDeployment.ops $(arg extra)"
+      output="screen" unless="$(arg start)" />
+
+    <node name="$(anon ObstacleDeployment)" 
+      pkg="mauve" type="mauve_trace_autostart.sh"
+      args="deployer-gnulinux -l $(arg log_level) -s $(find sterela)/scripts/ObstacleDeployment.ops $(arg extra)"
+      output="screen" if="$(arg start)" />
+  </group>
+</launch>
