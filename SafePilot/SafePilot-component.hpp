@@ -43,10 +43,10 @@ private:
     __mauve_hasBeenWritten[p.getName()] = true;
     p.write(d);
   };
+protected: RTT::InputPort< ::geometry_msgs::Twist > __mauve_port_desired_command;
 protected: RTT::InputPort< ::std_msgs::Float32 > __mauve_port_obstacle_distance;
-protected: RTT::InputPort< ::geometry_msgs::TwistStamped > __mauve_port_desired_command;
-protected: RTT::OutputPort< ::geometry_msgs::TwistStamped > __mauve_port_command;
-private: ::geometry_msgs::TwistStamped __mauve_var_cmd;
+protected: RTT::OutputPort< ::geometry_msgs::Twist > __mauve_port_command;
+private: ::geometry_msgs::Twist __mauve_var_cmd;
 protected: virtual bool configureHook();
 protected: virtual void stopHook();
 protected: virtual void cleanupHook();

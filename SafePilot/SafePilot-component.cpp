@@ -22,12 +22,12 @@ SafePilot::SafePilot ( const std::string& name )
 {
   this->addProperty("dist_zone2", this->__mauve_property_dist_zone2).doc("in [ 0 ; 10 ]");
   this->addProperty("dist_zone1", this->__mauve_property_dist_zone1).doc("in [ 0 ; 1 ]");
-  this->addEventPort("obstacle_distance", this->__mauve_port_obstacle_distance, boost::bind(&SafePilot::__mauve_new_data_callback, this, _1));
-  __mauve_hasBeenRead[__mauve_port_obstacle_distance.getName()] = false;
-  __mauve_hasNewData[__mauve_port_obstacle_distance.getName()] = false;
   this->addEventPort("desired_command", this->__mauve_port_desired_command, boost::bind(&SafePilot::__mauve_new_data_callback, this, _1));
   __mauve_hasBeenRead[__mauve_port_desired_command.getName()] = false;
   __mauve_hasNewData[__mauve_port_desired_command.getName()] = false;
+  this->addEventPort("obstacle_distance", this->__mauve_port_obstacle_distance, boost::bind(&SafePilot::__mauve_new_data_callback, this, _1));
+  __mauve_hasBeenRead[__mauve_port_obstacle_distance.getName()] = false;
+  __mauve_hasNewData[__mauve_port_obstacle_distance.getName()] = false;
   this->addPort("command", this->__mauve_port_command);
   __mauve_hasBeenWritten[__mauve_port_command.getName()] = false;
 
@@ -190,7 +190,7 @@ void SafePilot::__mauve_Zone3_entry() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::TwistStamped >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone3", "entry", (char*)"end");
@@ -215,7 +215,7 @@ void SafePilot::__mauve_Zone3_run() {
 
   {
 {
-__mauve_read< ::geometry_msgs::TwistStamped >(__mauve_port_desired_command,this->__mauve_var_cmd);
+__mauve_read< ::geometry_msgs::Twist >(__mauve_port_desired_command,this->__mauve_var_cmd);
 __mauve_read< ::std_msgs::Float32 >(__mauve_port_obstacle_distance,__mauve_state_machine.__mauve_var_d);
 };
 }
@@ -230,7 +230,7 @@ void SafePilot::__mauve_Zone3_handle() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::TwistStamped >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone3", "handle", (char*)"end");
@@ -289,7 +289,7 @@ void SafePilot::__mauve_Zone2_entry() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::TwistStamped >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone2", "entry", (char*)"end");
@@ -314,7 +314,7 @@ void SafePilot::__mauve_Zone2_run() {
 
   {
 {
-__mauve_read< ::geometry_msgs::TwistStamped >(__mauve_port_desired_command,this->__mauve_var_cmd);
+__mauve_read< ::geometry_msgs::Twist >(__mauve_port_desired_command,this->__mauve_var_cmd);
 __mauve_read< ::std_msgs::Float32 >(__mauve_port_obstacle_distance,__mauve_state_machine.__mauve_var_d);
 };
 }
@@ -329,7 +329,7 @@ void SafePilot::__mauve_Zone2_handle() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::TwistStamped >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone2", "handle", (char*)"end");
@@ -388,7 +388,7 @@ void SafePilot::__mauve_Zone1_entry() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::TwistStamped >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone1", "entry", (char*)"end");
@@ -413,7 +413,7 @@ void SafePilot::__mauve_Zone1_run() {
 
   {
 {
-__mauve_read< ::geometry_msgs::TwistStamped >(__mauve_port_desired_command,this->__mauve_var_cmd);
+__mauve_read< ::geometry_msgs::Twist >(__mauve_port_desired_command,this->__mauve_var_cmd);
 __mauve_read< ::std_msgs::Float32 >(__mauve_port_obstacle_distance,__mauve_state_machine.__mauve_var_d);
 };
 }
@@ -428,7 +428,7 @@ void SafePilot::__mauve_Zone1_handle() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::TwistStamped >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone1", "handle", (char*)"end");

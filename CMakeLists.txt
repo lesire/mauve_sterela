@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(sterela)
 # Find CATKIN packages
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake" )
-find_package(catkin REQUIRED mauve sensor_msgs geometry_msgs std_msgs roscpp)
+find_package(catkin REQUIRED mauve std_msgs geometry_msgs sensor_msgs roscpp)
 include_directories(include ${catkin_INCLUDE_DIRS})
 # options
 add_definitions( -fPIC )
@@ -34,8 +34,8 @@ find_package(catkin REQUIRED dynamic_reconfigure)
 file(GLOB CFG ${CMAKE_CURRENT_SOURCE_DIR}/cfg/*.cfg)
 generate_dynamic_reconfigure_options(${CFG})
 # Components
-add_subdirectory( ObstacleDetector )
 add_subdirectory( SafePilot )
+add_subdirectory( ObstacleDetector )
 # Tracing library
 add_subdirectory( lttng )
 # executables
@@ -56,7 +56,7 @@ endforeach()
 catkin_package(
   INCLUDE_DIRS include ${DEPS_INCLUDES}
   LIBRARIES sterela-models sterela-codels sterela-lttng
-  CATKIN_DEPENDS sensor_msgs geometry_msgs std_msgs roscpp
+  CATKIN_DEPENDS std_msgs geometry_msgs sensor_msgs roscpp
 )
 # Install library headers
 install(

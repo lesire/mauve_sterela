@@ -6,8 +6,8 @@ library sterela {
 
 	shell SafePilotShell {
 		input port obstacle_distance: Float32
-		input port desired_command: TwistStamped
-		output port command: TwistStamped
+		input port desired_command: Twist
+		output port command: Twist
 		
 		property dist_zone1: double [0;1] = 1
 		property dist_zone2: double [0;10] = 3	
@@ -15,7 +15,7 @@ library sterela {
 	
 	core SafePilotCore (SafePilotShell) {
 	
-		var cmd: TwistStamped
+		var cmd: Twist
 	
 		statemachine {
 			var d: Float32

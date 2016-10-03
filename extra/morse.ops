@@ -1,0 +1,3 @@
+stream("safe_pilot.command", ros.topic("/robot/control"))
+stream("obstacle_detector.laser_low", ros.topic("/robot/robot_laser"))
+stream("obstacle_detector.laser_high", ros.topic("/robot/pac_laser"))
