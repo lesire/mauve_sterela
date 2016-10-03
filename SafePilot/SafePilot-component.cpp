@@ -289,7 +289,7 @@ void SafePilot::__mauve_Zone2_entry() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, ::sterela::lttng::limitSpeedZone2(this->__mauve_var_cmd));
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone2", "entry", (char*)"end");
@@ -329,7 +329,7 @@ void SafePilot::__mauve_Zone2_handle() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, ::sterela::lttng::limitSpeedZone2(this->__mauve_var_cmd));
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone2", "handle", (char*)"end");
@@ -388,7 +388,7 @@ void SafePilot::__mauve_Zone1_entry() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, ::sterela::lttng::limitSpeedZone1(this->__mauve_var_cmd));
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone1", "entry", (char*)"end");
@@ -428,7 +428,7 @@ void SafePilot::__mauve_Zone1_handle() {
 #endif
 
   {
-__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, this->__mauve_var_cmd);
+__mauve_write< ::geometry_msgs::Twist >(__mauve_port_command, ::sterela::lttng::limitSpeedZone1(this->__mauve_var_cmd));
 }
 #ifdef USE_LTTNG
   tracepoint(mauve, statemachine, syscall(SYS_gettid), (char*)this->getName().c_str(), "Zone1", "handle", (char*)"end");

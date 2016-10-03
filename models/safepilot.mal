@@ -32,23 +32,23 @@ library sterela {
   			}
   			
   			state Zone2 {
-			    entry = { write(command, cmd); }
+			    entry = { write(command, limitSpeedZone2(cmd)); }
 			    run = {
 			    	read(desired_command, cmd);
 			    	read(obstacle_distance, d);
 			    }
-			    handle = { write(command, cmd); }
+			    handle = { write(command, limitSpeedZone2(cmd)); }
     			transition t1 if (toDouble(d) < dist_zone1) to Zone1
     			transition t3 if (toDouble(d) > dist_zone2) to Zone3
   			}
   			
   			state Zone1 {
-			    entry = { write(command, cmd); }
+			    entry = { write(command, limitSpeedZone1(cmd)); }
 			    run = {
 			    	read(desired_command, cmd);
 			    	read(obstacle_distance, d);
 			    }
-			    handle = { write(command, cmd); }
+			    handle = { write(command, limitSpeedZone1(cmd)); }
     			transition t3 if (toDouble(d) > dist_zone2) to Zone3
     			transition t2 if (toDouble(d) > dist_zone1) to Zone2
   			}

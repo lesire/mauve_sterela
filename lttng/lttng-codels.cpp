@@ -66,4 +66,32 @@ double r = ::sterela::min(a, b);
 
 return r;
 }
+// limitSpeedZone2(in cmd: Twist): Twist
+::geometry_msgs::Twist limitSpeedZone2 (
+  const ::geometry_msgs::Twist& cmd) {
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "limitSpeedZone2", (char*)"begin");
+#endif
+
+::geometry_msgs::Twist r = ::sterela::limitSpeedZone2(cmd);
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "limitSpeedZone2", (char*)"end");
+#endif
+
+return r;
+}
+// limitSpeedZone1(in cmd: Twist): Twist
+::geometry_msgs::Twist limitSpeedZone1 (
+  const ::geometry_msgs::Twist& cmd) {
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "limitSpeedZone1", (char*)"begin");
+#endif
+
+::geometry_msgs::Twist r = ::sterela::limitSpeedZone1(cmd);
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "limitSpeedZone1", (char*)"end");
+#endif
+
+return r;
+}
 }} // namespaces

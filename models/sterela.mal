@@ -9,5 +9,6 @@ library sterela {
 	codel toFloat32(in d: double): Float32
 	codel obstacleDistance(in s: LaserScan, in lateral_distance: double): double
 	codel min(in a: double, in b: double): double
-	
+	codel limitSpeedZone2(in cmd: Twist): Twist
+	codel limitSpeedZone1(in cmd: Twist): Twist
 }

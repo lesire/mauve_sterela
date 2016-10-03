@@ -13,5 +13,9 @@ namespace sterela {
   double obstacleDistance (const ::sensor_msgs::LaserScan& s, const double& lateral_distance); 
   // min(in a: double, in b: double): double
   double min (const double& a, const double& b); 
+  // limitSpeedZone2(in cmd: Twist): Twist
+  ::geometry_msgs::Twist limitSpeedZone2 (const ::geometry_msgs::Twist& cmd); 
+  // limitSpeedZone1(in cmd: Twist): Twist
+  ::geometry_msgs::Twist limitSpeedZone1 (const ::geometry_msgs::Twist& cmd); 
 }} // namespaces
 #endif // STERELA_LTTNG_H_
