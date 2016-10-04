@@ -9,7 +9,9 @@ library sterela {
 		output port distance: Float32
 		
 		property max_range: double [0;100] = 100
-		property base_width: double [0;10] = 2
+		property left_dist: double [0;10] = 1.5
+		property right_dist: double [0;10] = 1.2
+		property arm_width: double [0;10] = 1.5
 	}
 	
 	core ObstacleDetectorCore (ObstacleDetectorShell) {
@@ -18,13 +20,32 @@ library sterela {
 		var d: double
 	
 		update = {
+			var dN: double = max_range;
+			var dW: double = max_range;
+		
 			d = max_range;
-			if (read(laser_low, l) == new_data) then {
-				d = min(d, obstacleDistance(l, base_width/2));
+			
+			if ( read(laser_low, l) == new_data ) then {
+			
+				dN = rightObstacleDistance(l, right_dist); // north
+				dW = leftObstacleDistance(l, left_dist); // west
+				
+				d = dN;
+				
 			} else {}
+			
 			if (read(laser_high, l) == new_data) then {
-				d = min(d, obstacleDistance(l, max_range));
+			
+				d = obstacleDistance(l, arm_width/2);
+				
+				if ( (dN < dW) && (dN < d) ) then { write(distance, toFloat32(dN)); } // closest is North
+				else {
+					if ( (dW < dN) && (dW < d) ) then { write(distance, toFloat32(max_range)); } // closest is West and low
+					else { write(distance, toFloat32(d)); } //closest is high
+				}
+				
 			} else {}
+			
 			write(distance, toFloat32(d));
 		}
 	

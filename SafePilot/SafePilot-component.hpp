@@ -17,6 +17,8 @@ private: static std::string __mauve_monitors_json;
 protected: virtual bool setPeriod(RTT::Seconds);
 private: RTT::OutputPort<std_msgs::String> __mauve_state_port;
 private: RTT::OutputPort<std_msgs::Time> __mauve_tick_port;
+protected: double __mauve_property_base_width;
+protected: double __mauve_property_arm_width;
 protected: double __mauve_property_dist_zone2;
 protected: double __mauve_property_dist_zone1;
 private: 

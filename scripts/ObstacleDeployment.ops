@@ -9,6 +9,7 @@ import("rtt_rosparam")
 // Import sterela
 ros.import("sterela")
 // Create components
+loadComponent("line_guidance", "sterela::LineGuidance")
 loadComponent("safe_pilot", "sterela::SafePilot")
 loadComponent("obstacle_detector", "sterela::ObstacleDetector")
 // Set component properties from architectures
@@ -17,6 +18,8 @@ loadComponent("obstacle_detector", "sterela::ObstacleDetector")
 var ConnPolicy cp
 cp.type = DATA
 connect("obstacle_detector.distance", "safe_pilot.obstacle_distance", cp)
+cp.type = DATA
+connect("line_guidance.command", "safe_pilot.desired_command", cp)
 // Connect operations
 // Set activities
 obstacle_detector.period = 100
@@ -25,16 +28,26 @@ obstacle_detector.deadline = 100
 obstacle_detector.affinity = 0
 setActivity("obstacle_detector", 0.1, 1, ORO_SCHED_RT)
 obstacle_detector.setCpuAffinity(0)
+line_guidance.period = 100
+line_guidance.priority = 2
+line_guidance.deadline = 100
+line_guidance.affinity = 0
+setActivity("line_guidance", 0.1, 2, ORO_SCHED_RT)
+line_guidance.setCpuAffinity(0)
 safe_pilot.period = 100
-safe_pilot.priority = 2
+safe_pilot.priority = 3
 safe_pilot.deadline = 100
 safe_pilot.affinity = 0
-setActivity("safe_pilot", 0.1, 2, ORO_SCHED_RT)
+setActivity("safe_pilot", 0.1, 3, ORO_SCHED_RT)
 safe_pilot.setCpuAffinity(0)
 // Configure components
+line_guidance.configure()
 safe_pilot.configure()
 obstacle_detector.configure()
 // Stream ports to ROS
+stream("line_guidance.command", ros.topic("line_guidance/command"))
+stream("line_guidance.state", ros.topic("line_guidance/state"))
+stream("line_guidance.tick", ros.topic("line_guidance/tick"))
 stream("safe_pilot.desired_command", ros.topic("safe_pilot/desired_command"))
 stream("safe_pilot.obstacle_distance", ros.topic("safe_pilot/obstacle_distance"))
 stream("safe_pilot.command", ros.topic("safe_pilot/command"))
@@ -45,12 +58,25 @@ stream("obstacle_detector.laser_high", ros.topic("obstacle_detector/laser_high")
 stream("obstacle_detector.distance", ros.topic("obstacle_detector/distance"))
 stream("obstacle_detector.state", ros.topic("obstacle_detector/state"))
 stream("obstacle_detector.tick", ros.topic("obstacle_detector/tick"))
+// Dynamic reconfigure line_guidance
+loadService("line_guidance", "LineGuidance_reconfigure")
+line_guidance.LineGuidance_reconfigure.advertise("/line_guidance")
 // Dynamic reconfigure safe_pilot
 loadService("safe_pilot", "SafePilot_reconfigure")
 safe_pilot.SafePilot_reconfigure.advertise("/safe_pilot")
 // Dynamic reconfigure obstacle_detector
 loadService("obstacle_detector", "ObstacleDetector_reconfigure")
 obstacle_detector.ObstacleDetector_reconfigure.advertise("/obstacle_detector")
+// MAUVE parameters of line_guidance
+loadService("line_guidance", "rosparam")
+line_guidance.rosparam.setParam("line_guidance/period", "period")
+line_guidance.rosparam.setParam("line_guidance/priority", "priority")
+line_guidance.rosparam.setParam("line_guidance/deadline", "deadline")
+line_guidance.rosparam.setParam("line_guidance/affinity", "affinity")
+line_guidance.rosparam.setParam("line_guidance/shell", "shell")
+line_guidance.rosparam.setParam("line_guidance/core", "core")
+line_guidance.rosparam.setParam("line_guidance/statemachine", "statemachine")
+line_guidance.rosparam.setParam("line_guidance/monitors", "monitors")
 // MAUVE parameters of safe_pilot
 loadService("safe_pilot", "rosparam")
 safe_pilot.rosparam.setParam("safe_pilot/period", "period")
@@ -72,5 +98,6 @@ obstacle_detector.rosparam.setParam("obstacle_detector/core", "core")
 obstacle_detector.rosparam.setParam("obstacle_detector/statemachine", "statemachine")
 obstacle_detector.rosparam.setParam("obstacle_detector/monitors", "monitors")
 // Start components
+line_guidance.start()
 safe_pilot.start()
 obstacle_detector.start()

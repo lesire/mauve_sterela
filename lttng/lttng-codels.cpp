@@ -38,6 +38,20 @@ return r;
 
 return r;
 }
+// min(in a: double, in b: double): double
+double min (
+  const double& a, const double& b) {
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "min", (char*)"begin");
+#endif
+
+double r = ::sterela::min(a, b);
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "min", (char*)"end");
+#endif
+
+return r;
+}
 // obstacleDistance(in s: LaserScan, in lateral_distance: double): double
 double obstacleDistance (
   const ::sensor_msgs::LaserScan& s, const double& lateral_distance) {
@@ -52,16 +66,30 @@ double r = ::sterela::obstacleDistance(s, lateral_distance);
 
 return r;
 }
-// min(in a: double, in b: double): double
-double min (
-  const double& a, const double& b) {
+// leftObstacleDistance(in s: LaserScan, in lateral_distance: double): double
+double leftObstacleDistance (
+  const ::sensor_msgs::LaserScan& s, const double& lateral_distance) {
 #ifdef USE_LTTNG
-  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "min", (char*)"begin");
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "leftObstacleDistance", (char*)"begin");
 #endif
 
-double r = ::sterela::min(a, b);
+double r = ::sterela::leftObstacleDistance(s, lateral_distance);
 #ifdef USE_LTTNG
-  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "min", (char*)"end");
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "leftObstacleDistance", (char*)"end");
+#endif
+
+return r;
+}
+// rightObstacleDistance(in s: LaserScan, in lateral_distance: double): double
+double rightObstacleDistance (
+  const ::sensor_msgs::LaserScan& s, const double& lateral_distance) {
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "rightObstacleDistance", (char*)"begin");
+#endif
+
+double r = ::sterela::rightObstacleDistance(s, lateral_distance);
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "rightObstacleDistance", (char*)"end");
 #endif
 
 return r;
@@ -90,6 +118,20 @@ return r;
 ::geometry_msgs::Twist r = ::sterela::limitSpeedZone1(cmd);
 #ifdef USE_LTTNG
   tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "limitSpeedZone1", (char*)"end");
+#endif
+
+return r;
+}
+// staightSpeed(in vx: double): Twist
+::geometry_msgs::Twist staightSpeed (
+  const double& vx) {
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "staightSpeed", (char*)"begin");
+#endif
+
+::geometry_msgs::Twist r = ::sterela::staightSpeed(vx);
+#ifdef USE_LTTNG
+  tracepoint(mauve, codel, syscall(SYS_gettid), "sterela", "staightSpeed", (char*)"end");
 #endif
 
 return r;

@@ -4,8 +4,10 @@ library sterela {
 	
 		instance obstacle_detector: ObstacleDetector
 		instance safe_pilot: SafePilot
+		instance line_guidance: LineGuidance
 		
 		connection obstacle_detector.distance -> safe_pilot.obstacle_distance
+		connection line_guidance.command -> safe_pilot.desired_command
 
 	}
 	
@@ -15,8 +17,12 @@ library sterela {
 			priority = 1
 			period = 100
 		}
-		activity safe_pilot {
+		activity line_guidance {
 			priority = 2
+			period = 100
+		}
+		activity safe_pilot {
+			priority = 3
 			period = 100
 		}
 	}

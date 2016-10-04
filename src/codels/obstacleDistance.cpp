@@ -1,11 +1,12 @@
 
 #include "sterela/sterela.hpp"
 namespace sterela {
-// obstacleDistance(in s: LaserScan, in lateral_distance: double): double
+// 	obstacleDistance(in s: LaserScan, in lateral_distance: double): double
 double
 obstacleDistance
 (const ::sensor_msgs::LaserScan& s, const double& lateral_distance) {
 	double d = s.range_max;
+
 	for (int i = 0; i < s.ranges.size(); i++) {
 		double r = s.ranges[i];
 
@@ -19,7 +20,7 @@ obstacleDistance
 		// else, really an obstacle
 		d = min(d, r);
 	}
-	std::cout << "obstacle at " << d << std::endl;
+	//std::cout << "obstacle at " << d << std::endl;
 	return d;
 }
 } // namespace

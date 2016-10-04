@@ -10,6 +10,10 @@ struct Updater< SafePilotConfig > {
     uint32_t level, RTT::PropertyBag &bag) 
   {
 
+    setProperty< double >("base_width", bag, config.base_width);
+
+    setProperty< double >("arm_width", bag, config.arm_width);
+
     setProperty< double >("dist_zone2", bag, config.dist_zone2);
 
     setProperty< double >("dist_zone1", bag, config.dist_zone1);
@@ -18,6 +22,10 @@ struct Updater< SafePilotConfig > {
   }
   static bool configFromProperties(SafePilotConfig &config, RTT::PropertyBag &bag) 
   {
+
+    getProperty< double >("base_width", bag, config.base_width);
+
+    getProperty< double >("arm_width", bag, config.arm_width);
 
     getProperty< double >("dist_zone2", bag, config.dist_zone2);
 

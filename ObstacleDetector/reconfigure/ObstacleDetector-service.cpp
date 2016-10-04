@@ -10,7 +10,11 @@ struct Updater< ObstacleDetectorConfig > {
     uint32_t level, RTT::PropertyBag &bag) 
   {
 
-    setProperty< double >("base_width", bag, config.base_width);
+    setProperty< double >("right_dist", bag, config.right_dist);
+
+    setProperty< double >("arm_width", bag, config.arm_width);
+
+    setProperty< double >("left_dist", bag, config.left_dist);
 
     setProperty< double >("max_range", bag, config.max_range);
 
@@ -19,7 +23,11 @@ struct Updater< ObstacleDetectorConfig > {
   static bool configFromProperties(ObstacleDetectorConfig &config, RTT::PropertyBag &bag) 
   {
 
-    getProperty< double >("base_width", bag, config.base_width);
+    getProperty< double >("right_dist", bag, config.right_dist);
+
+    getProperty< double >("arm_width", bag, config.arm_width);
+
+    getProperty< double >("left_dist", bag, config.left_dist);
 
     getProperty< double >("max_range", bag, config.max_range);
 

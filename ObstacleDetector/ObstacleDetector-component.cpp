@@ -16,11 +16,15 @@ std::string ObstacleDetector::__mauve_monitors_json = "{}";
 
 ObstacleDetector::ObstacleDetector ( const std::string& name )
   : RTT::TaskContext(name, PreOperational)
-  , __mauve_property_base_width( 2 )
+  , __mauve_property_right_dist( 1.2 )
+  , __mauve_property_arm_width( 1.5 )
+  , __mauve_property_left_dist( 1.5 )
   , __mauve_property_max_range( 100 )
   , __mauve_period(0), __mauve_priority(0), __mauve_affinity(0), __mauve_deadline(0)
 {
-  this->addProperty("base_width", this->__mauve_property_base_width).doc("in [ 0 ; 10 ]");
+  this->addProperty("right_dist", this->__mauve_property_right_dist).doc("in [ 0 ; 10 ]");
+  this->addProperty("arm_width", this->__mauve_property_arm_width).doc("in [ 0 ; 10 ]");
+  this->addProperty("left_dist", this->__mauve_property_left_dist).doc("in [ 0 ; 10 ]");
   this->addProperty("max_range", this->__mauve_property_max_range).doc("in [ 0 ; 100 ]");
   this->addEventPort("laser_low", this->__mauve_port_laser_low, boost::bind(&ObstacleDetector::__mauve_new_data_callback, this, _1));
   __mauve_hasBeenRead[__mauve_port_laser_low.getName()] = false;
@@ -68,12 +72,15 @@ void ObstacleDetector::cleanupHook() {
 void ObstacleDetector::stopHook() {
 }
 void ObstacleDetector::__mauve_updateHook() {
-{
+double dN = __mauve_property_max_range;
+double dW = __mauve_property_max_range;{
 {
 this->__mauve_var_d = __mauve_property_max_range;
 if ((__mauve_read< ::sensor_msgs::LaserScan >(__mauve_port_laser_low,this->__mauve_var_l) == RTT::NewData)) {
 {
-this->__mauve_var_d = ::sterela::lttng::min(this->__mauve_var_d, ::sterela::lttng::obstacleDistance(this->__mauve_var_l, (__mauve_property_base_width / 2)));
+dN = ::sterela::lttng::rightObstacleDistance(this->__mauve_var_l, __mauve_property_right_dist);
+dW = ::sterela::lttng::leftObstacleDistance(this->__mauve_var_l, __mauve_property_left_dist);
+this->__mauve_var_d = dN;
 };
 }
 else {
@@ -83,7 +90,27 @@ else {
 };
 if ((__mauve_read< ::sensor_msgs::LaserScan >(__mauve_port_laser_high,this->__mauve_var_l) == RTT::NewData)) {
 {
-this->__mauve_var_d = ::sterela::lttng::min(this->__mauve_var_d, ::sterela::lttng::obstacleDistance(this->__mauve_var_l, __mauve_property_max_range));
+this->__mauve_var_d = ::sterela::lttng::obstacleDistance(this->__mauve_var_l, (__mauve_property_arm_width / 2));
+std::cout << "dN: " << dN << "; dW: " << dW << "; __mauve_var_d: " << __mauve_var_d << std::endl;
+if (((dN < dW) && (dN < this->__mauve_var_d))) {
+{
+__mauve_write< ::std_msgs::Float32 >(__mauve_port_distance, ::sterela::lttng::toFloat32(dN));
+};
+}
+else {
+{
+if (((dW < dN) && (dW < this->__mauve_var_d))) {
+{
+__mauve_write< ::std_msgs::Float32 >(__mauve_port_distance, ::sterela::lttng::toFloat32(__mauve_property_max_range));
+};
+}
+else {
+{
+__mauve_write< ::std_msgs::Float32 >(__mauve_port_distance, ::sterela::lttng::toFloat32(this->__mauve_var_d));
+};
+};
+};
+};
 };
 }
 else {

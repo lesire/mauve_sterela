@@ -16,10 +16,14 @@ std::string SafePilot::__mauve_monitors_json = "{}";
 
 SafePilot::SafePilot ( const std::string& name )
   : RTT::TaskContext(name, PreOperational)
+  , __mauve_property_base_width( 1.2 )
+  , __mauve_property_arm_width( 1.5 )
   , __mauve_property_dist_zone2( 3 )
   , __mauve_property_dist_zone1( 1 )
   , __mauve_period(0), __mauve_priority(0), __mauve_affinity(0), __mauve_deadline(0)
 {
+  this->addProperty("base_width", this->__mauve_property_base_width).doc("in [ 0 ; 10 ]");
+  this->addProperty("arm_width", this->__mauve_property_arm_width).doc("in [ 0 ; 10 ]");
   this->addProperty("dist_zone2", this->__mauve_property_dist_zone2).doc("in [ 0 ; 10 ]");
   this->addProperty("dist_zone1", this->__mauve_property_dist_zone1).doc("in [ 0 ; 1 ]");
   this->addEventPort("desired_command", this->__mauve_port_desired_command, boost::bind(&SafePilot::__mauve_new_data_callback, this, _1));
