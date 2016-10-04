@@ -1,0 +1,15 @@
+library sterela {
+
+	shell LineGuidanceShell {
+		output port command: Twist
+	}
+	
+	core LineGuidanceCore (LineGuidanceShell) {
+	
+		update = { write(command, staightSpeed(1)); }
+	
+	}
+	
+	component LineGuidance (LineGuidanceShell, LineGuidanceCore)
+
+}
