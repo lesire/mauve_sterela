@@ -15,7 +15,7 @@ rightObstacleDistance
 			double angle = s.angle_min + (s.angle_max - s.angle_min) * i / s.ranges.size();
 			double y = r * sin(angle);
 
-			if (y < 0) continue;
+			if (y > 0) continue;
 
 			if (abs(y) > lateral_distance) continue;
 

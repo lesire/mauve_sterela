@@ -91,7 +91,7 @@ else {
 if ((__mauve_read< ::sensor_msgs::LaserScan >(__mauve_port_laser_high,this->__mauve_var_l) == RTT::NewData)) {
 {
 this->__mauve_var_d = ::sterela::lttng::obstacleDistance(this->__mauve_var_l, (__mauve_property_arm_width / 2));
-std::cout << "dN: " << dN << "; dW: " << dW << "; __mauve_var_d: " << __mauve_var_d << std::endl;
+std::cout << "dN: " << dN << "; dW: " << dW << "; dHigh: " << __mauve_var_d << std::endl;
 if (((dN < dW) && (dN < this->__mauve_var_d))) {
 {
 __mauve_write< ::std_msgs::Float32 >(__mauve_port_distance, ::sterela::lttng::toFloat32(dN));
